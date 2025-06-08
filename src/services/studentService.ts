@@ -1,14 +1,14 @@
-// services/studentService.ts
 import dbConnect from "@/lib/mongodb";
 import Student, { IStudent } from "@/models/student";
+import { IClass } from "@/models/class";
 
-export async function getStudents(): Promise<IStudent[]> {
+export async function getStudents(): Promise<(IStudent & {classId: IClass})[]> {
   await dbConnect();
-  const students = await Student.find();
+  const students = await Student.find().populate("classId", "name");
   return students;
 }
 
-export async function createStudent(data: { name: string; email: string; classId: string }): Promise<IStudent> {
+export async function createStudent(data: { name: string; email: string; classId: string }): Promise<(IStudent & {classId: IClass})> {
   await dbConnect();
 
   const student = new Student({
@@ -18,5 +18,8 @@ export async function createStudent(data: { name: string; email: string; classId
   });
 
   await student.save();
-  return student;
+
+  const populatedStudent = await student.populate("classId", "name");
+
+  return populatedStudent;
 }

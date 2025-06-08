@@ -9,7 +9,7 @@ export interface IStudent extends Document {
 }
 
 const StudentSchema = new Schema<IStudent>({
-  classId: { type: Schema.Types.ObjectId, required: true },
+  classId: { type: Schema.Types.ObjectId, ref: "Class", required: true },
   name: { type: String, required: true },
   email: { type: String, required: true },
 }, {
