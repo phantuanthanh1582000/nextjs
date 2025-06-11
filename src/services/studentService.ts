@@ -1,6 +1,7 @@
 import dbConnect from "@/lib/mongodb";
 import Student, { IStudent } from "@/models/student";
 import { IClass } from "@/models/class";
+import "@/models/class";
 
 export async function getStudents(): Promise<(IStudent & {classId: IClass})[]> {
   await dbConnect();
